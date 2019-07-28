@@ -143,7 +143,7 @@ done
 export PATH=$PATH:/home/sven/bin
 
 source '/home/sven/lib/azure-cli/az.completion'
-export PATH=/home/sven/bin:/home/sven/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sven/bin:/usr/lib/go-1.9/bin
+export PATH=/home/sven/dotfiles/bin:/home/sven/bin:/home/sven/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sven/bin:/usr/lib/go-1.9/bin
 
 ###########################################################################
 # allow $USER to use keys. Only enter once and it will remain enabled till
