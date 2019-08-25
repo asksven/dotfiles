@@ -3,7 +3,7 @@
 ## Initial setup
 
 1. Clone: `git clone git@github.com:asksven/dotfiles.git ~/dotfiles`
-1. Install: `cd dotfiles && ./install.sh`
+1. Install: `cd dotfiles && git submodule update --init --recursive && ./install.sh`
 1. Take care of the sensitive data stored on g-drive
 
 ## Add configs from g-drive

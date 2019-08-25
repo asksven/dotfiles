@@ -14,7 +14,7 @@ for I in $(find config); do
       if [ -f "$HOME/$FILE" ];then
         echo $HOME/$FILE must be backed-up
         DATE=$(date +%Y-%m-%d_%H-%M)
-        echo create a backup to $HOME/$FILE-$DATE
+        echo create a backup to $HOME/$FILE to $HOME/$FILE_$DATE
         mv $HOME/$FILE $HOME/$FILE_$DATE
       fi
       ln -s $PWD/$I ~/$FILE
