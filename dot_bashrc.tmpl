@@ -1,0 +1,48 @@
+export HISTCONTROL=ignoreboth:erasedups
+export LANG=en_EN.UTF-8
+
+# PATH: user-local binaries first
+export PATH="$HOME/.local/bin:$PATH"
+
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="/opt/homebrew/opt/gnupg@2.2/bin:$PATH"
+PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
+{{ end -}}
+
+# GPG/SSH agent
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
+
+# Source aliases
+if [ -f "$HOME/.alias" ]; then
+  . "$HOME/.alias"
+fi
+
+# Tool completions
+{{ if lookPath "kubectl" -}}
+source <(kubectl completion bash)
+alias kc='kubectl'
+complete -o default -F __start_kubectl kc
+{{ end -}}
+{{ if lookPath "helm" -}}
+source <(helm completion bash)
+{{ end -}}
+
+# Starship prompt
+{{ if lookPath "starship" -}}
+eval "$(starship init bash)"
+{{ end -}}
+
+# Cargo (Rust)
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
+
+# uv
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+fi

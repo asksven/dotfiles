@@ -1,0 +1,84 @@
+#!/bin/bash
+# chezmoi:template:left-delimiter="{{" right-delimiter="}}"
+#
+# Install binaries from GitHub releases (Linux only).
+# On macOS these come from brew, so we skip this script.
+# Runs once per machine. Checks if each binary already exists.
+#
+# binary versions hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+{{ if eq .chezmoi.os "darwin" }}
+exit 0
+{{ end }}
+
+set -euo pipefail
+
+BIN_DIR="$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
+TMPDIR="$(mktemp -d)"
+trap 'rm -rf "$TMPDIR"' EXIT
+
+ARCH="{{ .chezmoi.arch }}"
+OS="{{ .chezmoi.os }}"
+
+# Map Go arch names to tool-specific arch names
+case "$ARCH" in
+  amd64) STARSHIP_ARCH="x86_64"; JUST_ARCH="x86_64" ;;
+  arm64) STARSHIP_ARCH="aarch64"; JUST_ARCH="aarch64" ;;
+esac
+
+# --- kubectl ---
+{{ $kv := .binaries.kubectl.version }}
+if ! command -v kubectl &>/dev/null; then
+  echo "Installing kubectl v{{ $kv }}..."
+  curl -fsSL "https://dl.k8s.io/release/v{{ $kv }}/bin/${OS}/${ARCH}/kubectl" -o "$BIN_DIR/kubectl"
+  chmod +x "$BIN_DIR/kubectl"
+fi
+
+# --- helm ---
+{{ $hv := .binaries.helm.version }}
+if ! command -v helm &>/dev/null; then
+  echo "Installing helm v{{ $hv }}..."
+  curl -fsSL "https://get.helm.sh/helm-v{{ $hv }}-${OS}-${ARCH}.tar.gz" -o "$TMPDIR/helm.tar.gz"
+  tar -xzf "$TMPDIR/helm.tar.gz" -C "$TMPDIR"
+  mv "$TMPDIR/${OS}-${ARCH}/helm" "$BIN_DIR/helm"
+  chmod +x "$BIN_DIR/helm"
+fi
+
+# --- starship ---
+{{ $sv := .binaries.starship.version }}
+if ! command -v starship &>/dev/null; then
+  echo "Installing starship v{{ $sv }}..."
+  curl -fsSL "https://github.com/starship/starship/releases/download/v{{ $sv }}/starship-${STARSHIP_ARCH}-unknown-linux-musl.tar.gz" -o "$TMPDIR/starship.tar.gz"
+  tar -xzf "$TMPDIR/starship.tar.gz" -C "$TMPDIR"
+  mv "$TMPDIR/starship" "$BIN_DIR/starship"
+  chmod +x "$BIN_DIR/starship"
+fi
+
+# --- just ---
+{{ $jv := .binaries.just.version }}
+if ! command -v just &>/dev/null; then
+  echo "Installing just v{{ $jv }}..."
+  curl -fsSL "https://github.com/casey/just/releases/download/{{ $jv }}/just-{{ $jv }}-${JUST_ARCH}-unknown-linux-musl.tar.gz" -o "$TMPDIR/just.tar.gz"
+  tar -xzf "$TMPDIR/just.tar.gz" -C "$TMPDIR"
+  mv "$TMPDIR/just" "$BIN_DIR/just"
+  chmod +x "$BIN_DIR/just"
+fi
+
+# --- yq ---
+{{ $yv := .binaries.yq.version }}
+if ! command -v yq &>/dev/null; then
+  echo "Installing yq v{{ $yv }}..."
+  curl -fsSL "https://github.com/mikefarah/yq/releases/download/v{{ $yv }}/yq_${OS}_${ARCH}" -o "$BIN_DIR/yq"
+  chmod +x "$BIN_DIR/yq"
+fi
+
+# --- chezmoi (for bootstrapping without brew) ---
+{{ $cv := .binaries.chezmoi.version }}
+if ! command -v chezmoi &>/dev/null; then
+  echo "Installing chezmoi v{{ $cv }}..."
+  curl -fsSL "https://github.com/twpayne/chezmoi/releases/download/v{{ $cv }}/chezmoi-${OS}-${ARCH}" -o "$BIN_DIR/chezmoi"
+  chmod +x "$BIN_DIR/chezmoi"
+fi
+
+echo "Binary installs complete."

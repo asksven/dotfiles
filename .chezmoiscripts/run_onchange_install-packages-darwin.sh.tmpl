@@ -1,0 +1,19 @@
+#!/bin/bash
+# chezmoi:template:left-delimiter="{{" right-delimiter="}}"
+#
+# Install brew packages on macOS.
+# Re-runs whenever packages.yaml changes (hash below).
+#
+# packages hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+{{ if ne .chezmoi.os "darwin" }}
+exit 0
+{{ end }}
+
+set -euo pipefail
+
+{{ range .darwin.taps -}}
+brew tap {{ . }}
+{{ end }}
+
+brew install {{ .darwin.brews | join " " }}

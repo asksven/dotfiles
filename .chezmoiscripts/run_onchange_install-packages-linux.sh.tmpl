@@ -1,0 +1,23 @@
+#!/bin/bash
+# chezmoi:template:left-delimiter="{{" right-delimiter="}}"
+#
+# Install packages on Linux via apt or dnf.
+# Re-runs whenever packages.yaml changes (hash below).
+#
+# packages hash: {{ include ".chezmoidata/packages.yaml" | sha256sum }}
+
+{{ if eq .chezmoi.os "darwin" }}
+exit 0
+{{ end }}
+
+set -euo pipefail
+
+# Keep sudo alive for the duration of the script
+sudo -v
+
+{{ if lookPath "apt-get" }}
+sudo apt-get update -qq
+sudo apt-get install -y -qq {{ .linux.apt | join " " }}
+{{ else if lookPath "dnf" }}
+sudo dnf install -y {{ .linux.dnf | join " " }}
+{{ end }}

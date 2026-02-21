@@ -1,0 +1,14 @@
+# Legacy repo structure — not managed by chezmoi
+bin
+config
+dotdirs
+git
+starship
+system
+install.sh
+.gitmodules
+
+# Repo meta files
+LICENSE
+PLAN.md
+README.md

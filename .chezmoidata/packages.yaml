@@ -1,0 +1,117 @@
+# Package lists per OS and package manager
+# chezmoi re-runs install scripts when this file changes
+
+darwin:
+  brews:
+    - argo
+    - argocd
+    - azure-cli
+    - bash
+    - bat
+    - chezmoi
+    - cilium-cli
+    - colima
+    - cookiecutter
+    - coreutils
+    - curl
+    - docker
+    - fzf
+    - git
+    - gnu-sed
+    - gnupg@2.2
+    - go
+    - graphviz
+    - hadolint
+    - helm
+    - htop
+    - ingress2gateway
+    - jinja2-cli
+    - jq
+    - just
+    - k3d
+    - k8sgpt
+    - kubie
+    - kustomize
+    - lynx
+    - minikube
+    - nmap
+    - node
+    - pinentry-mac
+    - pipx
+    - qemu
+    - rclone
+    - rename
+    - skopeo
+    - starship
+    - terraform
+    - uv
+    - vault
+    - watch
+    - wget
+    - ykman
+    - ykpers
+    - yq
+  taps:
+    - chainguard-dev/tap
+
+linux:
+  apt:
+    - bash
+    - bat
+    - curl
+    - coreutils
+    - fzf
+    - git
+    - gnupg
+    - htop
+    - jq
+    - lynx
+    - nmap
+    - nodejs
+    - rclone
+    - rename
+    - watch
+    - wget
+  dnf:
+    - bash
+    - bat
+    - curl
+    - coreutils
+    - fzf
+    - git
+    - gnupg2
+    - htop
+    - jq
+    - lynx
+    - nmap
+    - nodejs
+    - rclone
+    - rename
+    - watch
+    - wget
+
+# Binaries installed from GitHub releases (Linux only, macOS uses brew)
+binaries:
+  kubectl:
+    version: "1.31.0"
+    url: "https://dl.k8s.io/release/v{{.version}}/bin/{{.os}}/{{.arch}}/kubectl"
+  helm:
+    version: "3.17.1"
+    # Helm uses linux-amd64 / darwin-arm64 style naming
+    url: "https://get.helm.sh/helm-v{{.version}}-{{.os}}-{{.arch}}.tar.gz"
+    extractPath: "{{.os}}-{{.arch}}/helm"
+  starship:
+    version: "1.20.1"
+    # starship uses x86_64/aarch64 for arch naming
+    url: "https://github.com/starship/starship/releases/download/v{{.version}}/starship-{{.starshipArch}}-unknown-linux-musl.tar.gz"
+    extractPath: "starship"
+  just:
+    version: "1.38.0"
+    url: "https://github.com/casey/just/releases/download/{{.version}}/just-{{.version}}-{{.justArch}}-unknown-linux-musl.tar.gz"
+    extractPath: "just"
+  yq:
+    version: "4.44.3"
+    url: "https://github.com/mikefarah/yq/releases/download/v{{.version}}/yq_{{.os}}_{{.arch}}"
+  chezmoi:
+    version: "2.69.4"
+    url: "https://github.com/twpayne/chezmoi/releases/download/v{{.version}}/chezmoi-{{.os}}-{{.arch}}"

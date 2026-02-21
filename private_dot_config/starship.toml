@@ -1,0 +1,68 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+[line_break]
+disabled = false
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[❯](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[directory]
+disabled = false
+truncation_length = 3
+truncate_to_repo = false 
+truncation_symbol = '…/'
+
+[docker_context]
+disabled = true
+format = 'via [🐋 $context](blue bold)'
+
+[git_status]
+ahead = '⇡${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
+
+[git_metrics]
+added_style = 'bold blue'
+format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+
+[git_branch]
+symbol = " "
+truncation_length = 8 
+truncation_symbol = ''
+ignore_branches = []
+
+[kubernetes]
+format = '[󱃾\(($cluster)\)](green) '
+disabled = false
+
+[shell]
+fish_indicator = '󰈺 '
+powershell_indicator = '_'
+unknown_indicator = 'mystery shell'
+style = 'cyan bold'
+disabled = true
+
+[status]
+style = 'bg:blue'
+symbol = '🔴 '
+success_symbol = '🟢 '
+format = '[\[$symbol$common_meaning$signal_name$maybe_int\]]($style) '
+map_symbol = true
+disabled = true 
+
+[cmd_duration]
+min_time = 1000
+format = 'underwent [$duration](bold yellow)'
+disabled = false
+
+[python]
+symbol = " "

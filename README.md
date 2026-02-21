@@ -1,29 +1,50 @@
 # My dotfiles
 
-## Initial setup
+Managed with [chezmoi](https://chezmoi.io/).
 
-1. Clone: `git clone git@github.com:asksven/dotfiles.git ~/dotfiles`
-1. Install: `cd dotfiles && ./install.sh`
-1. Take care of the sensitive data stored on g-drive
+## Bootstrap a new machine
 
-## Add configs from g-drive
+```bash
+# One-liner: install chezmoi and apply dotfiles
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply asksven
+```
 
-Requires insync to be installed and sync to be finished.
+If chezmoi is already installed:
+
+```bash
+chezmoi init --apply git@github.com:asksven/dotfiles.git
+```
+
+## Daily usage
+
+```bash
+chezmoi update -v    # Pull and apply latest changes
+chezmoi add <file>   # Add a new dotfile
+chezmoi edit <file>  # Edit a managed dotfile
+chezmoi diff         # See pending changes
+chezmoi apply -v     # Apply changes
+```
+
+## SSH keys
+
+Managed via NextCloud (see old instructions below for reference).
+
+<details>
+<summary>Legacy: SSH via NextCloud</summary>
+
+Requires the NextCloud sync client to be installed and sync to be finished.
 
 1. Check your local .ssh and backup whatever you have there
-1. `ln -s /$HOME/<g-drive-dir>/configs/dotssh/$HOSTNAME-ssh ~/.ssh
+2. `ln -s /$HOME/<nextcloud-dir>/configs/dotssh/$HOSTNAME-ssh ~/.ssh`
 
-
-## Add a config to g-drive
-
-E.g. for .ssh (one directory per machine)
-
+To add SSH to NextCloud:
 ```
-cd <g-drive-dir> # e.g. ~/firstname.lastname@gmail.com
+cd <nextcloud-dir>
 cd configs
 mkdir dotssh
 mv ~/.ssh .
 mv .ssh $HOSTNAME-ssh
 ln -s $PWD/$HOSTNAME-ssh ~/.ssh
 ```
+</details>
 
