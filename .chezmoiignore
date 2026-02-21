@@ -9,6 +9,7 @@ install.sh
 .gitmodules
 
 # Repo meta files
+.github
 LICENSE
 PLAN.md
 README.md
