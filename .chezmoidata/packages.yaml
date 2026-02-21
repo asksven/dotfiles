@@ -24,7 +24,6 @@ darwin:
     - hadolint
     - helm
     - htop
-    - ingress2gateway
     - jinja2-cli
     - jq
     - just
@@ -112,6 +111,3 @@ binaries:
   yq:
     version: "4.44.3"
     url: "https://github.com/mikefarah/yq/releases/download/v{{.version}}/yq_{{.os}}_{{.arch}}"
-  chezmoi:
-    version: "2.69.4"
-    url: "https://github.com/twpayne/chezmoi/releases/download/v{{.version}}/chezmoi-{{.os}}-{{.arch}}"

@@ -73,12 +73,4 @@ if ! command -v yq &>/dev/null; then
   chmod +x "$BIN_DIR/yq"
 fi
 
-# --- chezmoi (for bootstrapping without brew) ---
-{{ $cv := .binaries.chezmoi.version }}
-if ! command -v chezmoi &>/dev/null; then
-  echo "Installing chezmoi v{{ $cv }}..."
-  curl -fsSL "https://github.com/twpayne/chezmoi/releases/download/v{{ $cv }}/chezmoi-${OS}-${ARCH}" -o "$BIN_DIR/chezmoi"
-  chmod +x "$BIN_DIR/chezmoi"
-fi
-
 echo "Binary installs complete."
