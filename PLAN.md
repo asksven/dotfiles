@@ -67,9 +67,9 @@ dotfiles/                              # chezmoi source repo
 
 ### Phase 9: Push and Test
 
-- [ ] Commit and push
+- [x] Commit and push
 - [ ] Test: `chezmoi init --apply git@github.com:asksven/dotfiles.git` on fresh machine
-- [ ] Test in Docker: Ubuntu (apt) and Fedora (dnf) containers
+- [x] Test in Docker: Ubuntu (apt) and Fedora (dnf) containers
 
 ## Key Decisions
 
